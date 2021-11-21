@@ -7,13 +7,13 @@
 long ConsoleBps = 19200;
 const int sensorTrigPin = 14;          // sensorTrigPin tells distance sensor to start/stop a reading
 const int sensorEchoPin = 15;          // sensorEchoPin is where distance sensor provides feedback
-const int transistorGatePin = 39;      // transistorGatePin will flip the transistor to power the pneumatic solenoid valve's 12v power
+const int transistorGatePin = 38;      // transistorGatePin will flip the transistor to power the pneumatic solenoid valve's 12v power
 const int minTriggerDistance = 10;      // minimum distance, inches,  object must be away in order to trigger
 const int maxTriggerDistance = 72;      // maximum distance, inches, object must be away in order to trigger
 const int risingDelayMillis = 15000;   // risingDelayMillis is number of millis to hold body up
 const int loweringDelayMillis = 15000; // loweringDelayMillis is number of millis to allow body to lower before restarting loop
 const int requiredHitCount = 2;       // number of matching hits from distance sensor to trigger rise
-const int soundTriggerPin = 30;       // soundTriggerPin is the pin # linked to the sound card, bringing it LOW turns on sound
+const int soundTriggerPin = 29;       // soundTriggerPin is the pin # linked to the sound card, bringing it LOW turns on sound
 
 // establish variables for ultrasonic distance sensor
 long duration, inches, countOfHits, counter;
@@ -58,16 +58,22 @@ void loop() {
       countOfHits = countOfHits+1;
   }
   delay(1);
-  inches = getSensorDistance();
-  log("Run 2: " + String(inches) + "in");
-  if(inches > minTriggerDistance && inches < maxTriggerDistance) {
+  if(countOfHits < requiredHitCount ) 
+  {
+    inches = getSensorDistance();
+    log("Run 2: " + String(inches) + "in");
+    if(inches > minTriggerDistance && inches < maxTriggerDistance) {
       countOfHits = countOfHits+1;
-  }
+    }
+   }
   delay(1);
-  inches = getSensorDistance();
-  log("Run 3: " + String(inches) + "in");
-  if(inches > minTriggerDistance && inches < maxTriggerDistance) {
+  if(countOfHits < requiredHitCount ) 
+  {
+    inches = getSensorDistance();
+    log("Run 3: " + String(inches) + "in");
+    if(inches > minTriggerDistance && inches < maxTriggerDistance) {
       countOfHits = countOfHits+1;
+    }
   }
   
   // print out distance to console
